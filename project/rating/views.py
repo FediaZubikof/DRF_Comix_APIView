@@ -37,16 +37,32 @@ class RatingGetViewSet(APIView):
     serializer_class = RatingSerializer
     permission_classes = [AllowAny]
 
+    # def get(self, request): # Способ извлечение из БД с помощью сериализатора
+    #     max_count = random.randint(0, Joke.objects.count())
+    #     data = Joke.objects.values().get(id=max_count)
+    #     print(data)
+    #     serialaizer = self.serializer_class(data)
+    #     return Response(serialaizer.data)
+
     def get(self, request):  # Способ извлечение из БД
         rating = Rating.objects.all()
         # the many param informs the serializer that it will be serializing more than a single rating.
         serializer = self.serializer_class(rating, many=True)
-        result = Rating.objects.filter(comic_id='1').aggregate(
+        result_rating = Rating.objects.filter(comic_id='1').aggregate(
             Avg('value')
         )
-        print(result)
+        result_count = Rating.objects.filter(comic_id='1').aggregate(
+            Count('id')
+        )
+        print(result_rating, result_count)
         # return Response({"rating": serializer.data})
-        return Response({"rating": result})
+        return Response({"rating": result_rating})
+
+    # def get_rating(self, request):  # Способ извлечение из БД
+    #     # data = Univer.objects.filter(id=random.randint(1, count_id)).values_list('name_univer')
+    #     data = Rating.objects.filter(comic_id=1).values_list('value')
+    #     print(data)
+    #     return Response(data)
 
 
 class ComicGetViewSet(APIView):

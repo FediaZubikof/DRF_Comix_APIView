@@ -7,8 +7,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('Start Average')
 
-        result = Rating.objects.filter(comic_id='2').aggregate(
+        result_rating = Rating.objects.filter(comic_id='2').aggregate(
             Avg('value')
         )
-        print(result)
+        result_count = Rating.objects.filter(comic_id='1').aggregate(
+            Count('id')
+        )
+        print(result_rating, result_count)
         self.stdout.write('Done')
