@@ -19,13 +19,6 @@ class ComicSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return Comic.objects.create(**validated_data)
-    # def create(self, validated_data):
-    #     return Comic.objects.create(
-    #         id=validated_data.get('id'),
-    #         title=validated_data.get('title'),
-    #         author=validated_data.get('author'),
-    #         rating=validated_data.get('rating'),
-    #     )
 
     def update(self, instance, validated_data):
         instance.id = validated_data.get('id', instance.id)
@@ -53,28 +46,9 @@ class RatingSerializer(serializers.ModelSerializer):
         return Rating.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-
         instance.comic_id = validated_data.get('comic_id', instance.comic_id)
         instance.user_id = validated_data.get('user_id', instance.user_id)
         instance.value = validated_data.get('value', instance.value)
 
         instance.save()
         return instance
-
-# class RatingCreateSerializer:
-# def create(self, validate_data):
-#     return Rating.objects.create(
-#         user_id=validate_data.get('user_id'),
-#         comic_id=validate_data.get('comic_id'),
-#         value=validate_data.get('value'),
-#     )
-
-
-# class ComicCreateSerializer:
-# def create(self, validate_data):
-#     return Comic.objects.create(
-#         user_id=validate_data.get('user_id'),
-#         comic_id=validate_data.get('comic_id'),
-#         value=validate_data.get('value'),
-#         rating=validate_data.get('rating'),
-#     )
